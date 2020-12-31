@@ -1,0 +1,52 @@
+[
+    {
+        "id": 1,
+        "namaCustomer": "Stillmen Vallian",
+        "layanan": "Servis lemari dan bikin meja rias",
+        "nilaiPekerjaan": 5000000,
+        "pembayaran":[
+            {
+                "tanggal": "2020-12-12",
+                "nilai": 2000000
+            },
+            {
+                "tanggal": "2020-12-21",
+                "nilai": 2000000
+            }
+        ],
+        "statusPekerjaan": "aktif",
+        "belumDibayar": 1000000
+    },
+    {
+        "id": 2,
+        "namaCustomer": "Banteng",
+        "layanan": "Meja duduk",
+        "nilaiPekerjaan": 2000000,
+        "pembayaran":[
+            {
+                "tanggal": "2020-12-12",
+                "nilai": 1000000
+            }
+        ],
+        "statusPekerjaan": "aktif",
+        "belumDibayar": 1000000
+    },
+    {
+        "id": 3,
+        "namaCustomer": "Makmur Manisan Lampung",
+        "layanan": "Lemari jualan",
+        "nilaiPekerjaan": 10000000,
+        "pembayaran":[
+            {
+                "tanggal": "2020-12-12",
+                "nilai": 5000000
+            },
+            {
+                "tanggal": "2020-12-21",
+                "nilai": 5000000
+            }
+        ],
+        "statusPekerjaan": "selesai",
+        "belumDibayar": 0
+    }
+]
