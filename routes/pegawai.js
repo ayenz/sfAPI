@@ -17,16 +17,21 @@ router.get("/", async (req, res) => {
 
 //ADD PEGAWAI
 router.post("/add", async (req, res) => {
-    const pegawai = new Pegawai({
-        nama: req.body.nama,
-        telp: req.body.telp,
-        gaji: req.body.gaji,
-    });
-    try {
-        const savedPost = await pegawai.save();
-        res.json(savedPost);
-    } catch (error) {
-        res.json({ error: true, message: error });
+    if (req.body.secret != SECRET || req.body.secret == null) {
+        res.json({ error: true, message: 'Wrong secret' });
+    }
+    else {
+        const pegawai = new Pegawai({
+            nama: req.body.nama,
+            telp: req.body.telp,
+            gaji: req.body.gaji,
+        });
+        try {
+            const savedPost = await pegawai.save();
+            res.json(savedPost);
+        } catch (error) {
+            res.json({ error: true, message: error });
+        }
     }
 });
 
@@ -41,12 +46,12 @@ router.get("/get/:pegawaiId", async (req, res) => {
 });
 
 //DELETE PEGAWAI BY ID
-router.delete("/delete/:pegawaiId", async (req, res) => {
+router.delete("/delete", async (req, res) => {
     if (req.body.secret != SECRET || req.body.secret == null) {
         res.json({ error: true, message: 'Wrong secret' });
     } else {
         try {
-            const pegawai = await Pegawai.deleteOne({ _id: req.params.pegawaiId });
+            const pegawai = await Pegawai.deleteOne({ _id: req.body.id });
             res.json(pegawai);
         } catch (error) {
             res.json({ error: true, message: error });
@@ -55,12 +60,12 @@ router.delete("/delete/:pegawaiId", async (req, res) => {
 });
 
 //UDPATE ATTRIBUTE BY ID
-router.patch("/update/:pegawaiId", async (req, res) => {
+router.patch("/update", async (req, res) => {
     if (req.body.secret != SECRET || req.body.secret == null) {
         res.json({ error: true, message: 'Wrong secret' });
     } else {
         try {
-            const pegawaiOldData = await Pegawai.findById(req.params.pegawaiId);
+            const pegawaiOldData = await Pegawai.findById(req.body.id);
             const nama = (req.body.nama == null) ? pegawaiOldData.nama : req.body.nama;
             const telp = (req.body.telp == null) ? pegawaiOldData.telp : req.body.telp;
             const gaji = (req.body.gaji == null) ? pegawaiOldData.gaji : req.body.gaji;
@@ -69,7 +74,7 @@ router.patch("/update/:pegawaiId", async (req, res) => {
             const jumlahBon = (req.body.jumlahBon == null) ? pegawaiOldData.jumlahBon : req.body.namjumlahBon;
 
             const pegawai = await Pegawai.updateOne(
-                { _id: req.params.pegawaiId },
+                { _id: req.body.id },
                 {
                     $set: {
                         nama: nama,
@@ -78,6 +83,34 @@ router.patch("/update/:pegawaiId", async (req, res) => {
                         totalHariKerja: totalHariKerja,
                         jumlahBon: jumlahBon,
                         status: status,
+                        tanggalDiubah: Date.now()
+                    }
+                },
+                { upsert: true }
+            );
+            res.json(pegawai);
+        } catch (error) {
+            res.json({ error: true, message: error });
+        }
+    }
+});
+
+//UDPATE ATTRIBUTE BY ID
+router.patch("/absen", async (req, res) => {
+    if (req.body.secret != SECRET || req.body.secret == null) {
+        res.json({ error: true, message: 'Wrong secret' });
+    } else {
+        try {
+            const pegawaiOldData = await Pegawai.findById(req.body.id);
+            const totalHariKerja = pegawaiOldData.totalHariKerja + 1;
+            const jumlahBon = (req.body.jumlahBon == null) ? pegawaiOldData.jumlahBon : req.body.jumlahBon;
+
+            const pegawai = await Pegawai.updateOne(
+                { _id: req.body.id },
+                {
+                    $set: {
+                        totalHariKerja: totalHariKerja,
+                        jumlahBon: jumlahBon,
                         tanggalDiubah: Date.now()
                     }
                 },
