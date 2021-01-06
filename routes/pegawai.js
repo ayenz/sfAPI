@@ -71,7 +71,8 @@ router.patch("/update", async (req, res) => {
             const gaji = (req.body.gaji == null) ? pegawaiOldData.gaji : req.body.gaji;
             const status = (req.body.status == null) ? pegawaiOldData.status : req.body.status;
             const totalHariKerja = (req.body.totalHariKerja == null) ? pegawaiOldData.totalHariKerja : req.body.totalHariKerja;
-            const jumlahBon = (req.body.jumlahBon == null) ? pegawaiOldData.jumlahBon : req.body.namjumlahBon;
+            const jumlahBon = (req.body.jumlahBon == null) ? pegawaiOldData.jumlahBon : req.body.jumlahBon;
+            const cicilanBon = (req.body.cicilanBon == null) ? pegawaiOldData.cicilanBon : req.body.cicilanBon;
 
             const pegawai = await Pegawai.updateOne(
                 { _id: req.body.id },
@@ -82,6 +83,7 @@ router.patch("/update", async (req, res) => {
                         gaji: gaji,
                         totalHariKerja: totalHariKerja,
                         jumlahBon: jumlahBon,
+                        cicilanBon: cicilanBon,
                         status: status,
                         tanggalDiubah: Date.now()
                     }
@@ -95,7 +97,7 @@ router.patch("/update", async (req, res) => {
     }
 });
 
-//UDPATE ATTRIBUTE BY ID
+//UDPATE ATTRIBUTE ABSEN BY ID
 router.patch("/absen", async (req, res) => {
     if (req.body.secret != SECRET || req.body.secret == null) {
         res.json({ error: true, message: 'Wrong secret' });
@@ -104,6 +106,7 @@ router.patch("/absen", async (req, res) => {
             const pegawaiOldData = await Pegawai.findById(req.body.id);
             const totalHariKerja = pegawaiOldData.totalHariKerja + 1;
             const jumlahBon = (req.body.jumlahBon == null) ? pegawaiOldData.jumlahBon : req.body.jumlahBon;
+            const cicilanBon = (req.body.cicilanBon == null) ? pegawaiOldData.cicilanBon : req.body.cicilanBon;
 
             const pegawai = await Pegawai.updateOne(
                 { _id: req.body.id },
@@ -111,6 +114,7 @@ router.patch("/absen", async (req, res) => {
                     $set: {
                         totalHariKerja: totalHariKerja,
                         jumlahBon: jumlahBon,
+                        cicilanBon: cicilanBon,
                         tanggalDiubah: Date.now()
                     }
                 },

@@ -16,8 +16,10 @@ mongoose.connect(
 //IMPORT ROUTES
 const pegawaiRoutes = require("./routes/pegawai");
 const boronganRoutes = require("./routes/borongan");
+const gajiRoutes = require("./routes/gaji");
 app.use("/api/pegawai", pegawaiRoutes);
 app.use("/api/borongan", boronganRoutes);
+app.use("/api/gaji", gajiRoutes);
 
 app.get("/", (req, res) => {
     res.send("We are on HOme, Hello world bethc!");

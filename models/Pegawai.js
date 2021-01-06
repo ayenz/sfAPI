@@ -14,13 +14,17 @@ const PegawaiSchema = mongoose.Schema({
     },
     status: {
         type: Boolean,
-        require: true,
+        default: true,
     },
     totalHariKerja: {
         type: Number,
         default: 0,
     },
     jumlahBon: {
+        type: Number,
+        default: 0,
+    },
+    cicilanBon: {
         type: Number,
         default: 0,
     },
